@@ -1,7 +1,7 @@
-name: learn-github-actions
+name: create-firestore-collection
 on: [push]
 jobs:
-  check-bats-version:
+  build-firebase:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
