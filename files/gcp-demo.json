@@ -1,14 +1,18 @@
 [
   {
-    "itemID": "RAGHAVA_000",
-    "itemName": "RAGHAVA DEMO"
-  },
-  {
-    "itemID": "RAGHAVA_001",
-    "itemName": "RAGHAVA GCP"
-  },
-  {
-    "itemID": "RAGHAVA_002",
-    "itemName": "RAGHAVA FIRESTORE"
+    "itemID": "GCP-BOOK",
+    "title": "GCP",
+    "refId":1,
+    "imagePath": "gcp.png"
+  },{
+    "itemID": "AWS-BOOK",
+    "title": "AWS",
+    "refId":2,
+    "imagePath": "aws.png"
+  },{
+    "itemID": "AZURE-BOOK",
+    "title": "AZURE",
+    "refId":3,
+    "imagePath": "azure.png"
   }
 ]
