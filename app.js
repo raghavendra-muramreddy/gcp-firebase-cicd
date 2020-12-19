@@ -17,14 +17,25 @@ fs.readdir(directoryPath, function(err, files) {
     return console.log("Unable to scan directory: " + err);
   }
 
+  firestore.collection.forEach(collectionName=>{
+
+  });
+
   files.forEach(function(file) {
     var lastDotIndex = file.lastIndexOf(".");
-
+  
     var menu = require("./files/" + file);
 
     menu.forEach(function(obj) {
+      var collectonName=file.substring(0, lastDotIndex);
+      firestore.collection(collectonName).document().forEach(document=>{
+        
+        document.delete();
+       console.log("document delete...."+document);
+      });
+      console.log("collection Name:"+collectonName);
       firestore
-        .collection(file.substring(0, lastDotIndex))
+        .collection(collectonName)
         .doc(obj.itemID)
         .set(obj)
         .then(function(docRef) {
