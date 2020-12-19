@@ -28,12 +28,13 @@ fs.readdir(directoryPath, function(err, files) {
 
     menu.forEach(function(obj) {
       var collectonName=file.substring(0, lastDotIndex);
+      console.log("collection Name:"+collectonName);
       firestore.collection(collectonName).document().forEach(document=>{
         
         document.delete();
        console.log("document delete...."+document);
       });
-      console.log("collection Name:"+collectonName);
+      
       firestore
         .collection(collectonName)
         .doc(obj.itemID)
