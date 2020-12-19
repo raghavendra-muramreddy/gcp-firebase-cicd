@@ -10,7 +10,7 @@ admin.initializeApp({
 const firestore = admin.firestore();
 const path = require("path");
 const fs = require("fs");
-const directoryPath = path.join(__dirname, "files");
+const directoryPath = path.join(__dirname, "data");
 
 
 
@@ -72,7 +72,7 @@ async function saveCollection(files) {
     var lastDotIndex = file.lastIndexOf(".");
     var collectonName = file.substring(0, lastDotIndex);
     await deleteCollectionIfExists(collectonName);
-    var menu = require("./files/" + file);
+    var menu = require("./data/" + file);
     var savedcollectionsRef = []
     for (menuIndex in menu) {
       var obj = menu[menuIndex];
