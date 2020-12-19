@@ -17,9 +17,6 @@ fs.readdir(directoryPath, function(err, files) {
     return console.log("Unable to scan directory: " + err);
   }
 
-  firestore.collection.forEach(collectionName=>{
-
-  });
 
   files.forEach(function(file) {
     var lastDotIndex = file.lastIndexOf(".");
@@ -29,13 +26,7 @@ fs.readdir(directoryPath, function(err, files) {
     menu.forEach(function(obj) {
       var collectonName=file.substring(0, lastDotIndex);
       console.log("collection Name:"+collectonName);
-      firestore.collection(collectonName).document().forEach(document=>{
-        
-        document.delete();
-       console.log("document delete...."+document);
-      });
-      
-      firestore
+          firestore
         .collection(collectonName)
         .doc(obj.itemID)
         .set(obj)
