@@ -4,7 +4,7 @@ var serviceAccount = require("./api-key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://playground-s-11-1756c3f9-default-rtdb.firebaseio.com/"
+  databaseURL: "https://playground-s-11-496b5d7e-default-rtdb.firebaseio.com/"
 });
 
 const firestore = admin.firestore();
