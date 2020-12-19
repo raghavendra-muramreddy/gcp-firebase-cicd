@@ -12,30 +12,78 @@ const path = require("path");
 const fs = require("fs");
 const directoryPath = path.join(__dirname, "files");
 
-fs.readdir(directoryPath, function(err, files) {
-  if (err) {
-    return console.log("Unable to scan directory: " + err);
+
+
+function deleteDoc(docRef) {
+  return docRef.delete();
+
+}
+
+
+async function getDocList(collectionObj) {
+  var docListPromise = firestore.collection(collectionObj.path).listDocuments();
+
+  let docList = await docListPromise;
+  deletedDocsList=[];
+  for (doc in docList) {
+    deletedDocsList.push(await deleteDoc(docList[doc]));
+
   }
+  return deletedDocsList;
 
+}
 
-  files.forEach(function(file) {
-    var lastDotIndex = file.lastIndexOf(".");
+async function deleteCollectionIfExists(collectionName) {
+  var collectionsRef = firestore.collection(collectionName);
+
+  if (collectionsRef != null) {
+    return await getDocList(collectionsRef);
+  } else {
+    console.log(collectionName + " collection Not found");
+    return "";
+  }
   
-    var menu = require("./files/" + file);
+}
 
-    menu.forEach(function(obj) {
-      var collectonName=file.substring(0, lastDotIndex);
-      console.log("collection Name:"+collectonName);
-          firestore
-        .collection(collectonName)
-        .doc(obj.itemID)
-        .set(obj)
-        .then(function(docRef) {
-          console.log("Document written");
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
-    });
+async function process() {
+  console.log("****************process start***************");
+  await readCollectionPath();
+  
+}
+
+
+async function readCollectionPath() {
+  fs.readdir(directoryPath, function (err, files) {
+    if (err) {
+      return console.log("Unable to scan directory: " + err);
+    } else {
+      saveCollection(files).then(collectionsList => {
+        console.log("total saved collections:" + collectionsList.length);
+        console.log("****************process end***************");
+      });
+
+    }
+
   });
-});
+}
+async function saveCollection(files) {
+  for (fileIndex in files) {
+    var file = files[fileIndex];
+    var lastDotIndex = file.lastIndexOf(".");
+    var collectonName = file.substring(0, lastDotIndex);
+    await deleteCollectionIfExists(collectonName);
+    var menu = require("./files/" + file);
+    var savedcollectionsRef = []
+    for (menuIndex in menu) {
+      var obj = menu[menuIndex];
+      var collectonName = file.substring(0, lastDotIndex);
+      var docRef = await firestore.collection(collectonName).doc(obj.itemID).set(obj);
+      savedcollectionsRef.push(await docRef);
+    }
+    return savedcollectionsRef;
+
+  }
+}
+
+process();
+
